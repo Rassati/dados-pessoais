@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dados Pessoais</title>
+</head>
+<body>
+<h1>Pessoas</h1>
+<section>
+  <h2>Lista de Pessoas</h2>
+  <button id="btnListar">Carregar lista</button>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th><th>Nome</th><th>Username</th><th>E-mail</th>
+    </tr>
+    </thead>
+    <tbody id="corpoTabela"></tbody>
+  </table>
+</section>
+<hr />
+<section>
+  <h2>Buscar pessoa pelo username</h2>
+  <button id="btnFulano">Carregar Fulano</button>
+  <button id="btnCiclano">Carregar Ciclano</button>
+  <button id="btnBeltrana">Carregar Beltrana</button>
+  <article>
+    <h3 id="nome">Nome</h3>
+    <p>ID: <strong id="id"></strong></p>
+    <p>Username: <strong id="username"></strong></p>
+    <p>E-mail: <strong id="email"></strong></p>
+    <p>Telefone: <strong id="telefone"></strong></p>
+    <p>Data de Nascimento: <strong id="dataNascimento"></strong></p>
+  </article>
+</section>
+<script>
+  // Buscar e exibir a lista de pessoas
+  document.getElementById('btnListar').addEventListener('click', async () => {
+  try {
+  const httpResp = await fetch('/pessoas');
+  if (!httpResp.ok) {
+  throw new Error('Erro HTTP ' + httpResp.status);
+  }
+  const pessoas = await httpResp.json();
+  const tbody = document.getElementById('corpoTabela');
+  tbody.innerHTML = '';
+  for (const p of pessoas) {
+  tbody.insertAdjacentHTML('beforeend',
+  `<tr>
+  <td>${p.id}</td>
+  <td>${p.nome}</td>
+  <td>${p.username}</td>
+  <td>${p.email}</td>
+  </tr>`
+  );
+  }
+  } catch (err) {
+  alert('Erro ao carregar lista: ' + err.message);
+  }
+  });
+ // Buscar e exibir dados de uma pessoa pelo username
+ async function getPessoa(username) {
+ try {
+ const httpResp = await fetch(`/pessoas/${username}`);
+ if (!httpResp.ok) {
+ throw new Error('Erro HTTP ' + httpResp.status);
+ }
+ const p = await httpResp.json();
+ document.getElementById('nome').textContent = p.nome;
+ document.getElementById('id').textContent = p.id;
+ document.getElementById('username').textContent = p.username;
+ document.getElementById('email').textContent = p.email;
+ document.getElementById('telefone').textContent = p.telefone;
+ document.getElementById('dataNascimento').textContent = p.dataNascimento;
+
+ } catch (err) {
+ alert('Erro ao buscar pessoa: ' + err.message);
+ }
+ }
+ document.getElementById('btnFulano').addEventListener('click', () => getPessoa('fulano'));
+ document.getElementById('btnCiclano').addEventListener('click', () => getPessoa('ciclano'));
+ document.getElementById('btnBeltrana').addEventListener('click', () => getPessoa('beltrana'));
+</script>
+</body>
+</html>

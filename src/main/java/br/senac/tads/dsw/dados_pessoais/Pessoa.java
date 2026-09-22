@@ -1,11 +1,13 @@
 package br.senac.tads.dsw.dados_pessoais;
 
+import br.senac.tads.dsw.dados_pessoais.validacao.SenhasIguais;
 import jakarta.validation.constraints.*;
 // import br.senac.tads.dsw.dados_pessoais.validacao.SenhasIguais;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@SenhasIguais
 public class Pessoa {
 
 	private Integer id;

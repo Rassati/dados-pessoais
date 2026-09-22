@@ -38,4 +38,24 @@ public class PessoaService {
 	public Optional<Pessoa> obterPessoa (String username) {
 		return Optional.ofNullable(mapPessoas.get(username));
 	}
+
+	public Pessoa alterarPessoa(String username, PessoaAlteracaoDto pessoaAlteracao) {
+		if (!mapPessoas.containsKey(username)) {
+			throw new NaoEncontradoException("Pessoa " + username + " não encontrada");
+		}
+		Pessoa pessoaOriginal = mapPessoas.get(username);
+		pessoaOriginal.setNome(pessoaAlteracao.getNome());
+		pessoaOriginal.setEmail(pessoaAlteracao.getEmail());
+		pessoaOriginal.setTelefone(pessoaAlteracao.getTelefone());
+		pessoaOriginal.setDataNascimento(pessoaAlteracao.getDataNascimento());
+		pessoaOriginal.setConhecimentos(pessoaAlteracao.getConhecimentos());
+		return pessoaOriginal;
+	}
+
+	public void removerPessoa(String username) {
+		if (!mapPessoas.containsKey(username)) {
+			throw new NaoEncontradoException("Pessoa " + username + " não encontrada");
+		}
+		mapPessoas.remove(username);
+	}
 }

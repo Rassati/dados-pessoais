@@ -59,5 +59,13 @@ public class PessoaController {
 		return ResponseEntity.created(location).build();
 	}
 
+	@PutMapping("/{username}")
+	public ResponseEntity<?> atualizar(@PathVariable("username") String username,
+									   @RequestBody @Valid PessoaAlteracaoDto pessoa) {
+		Pessoa pessoaAlterada = pessoaService.alterarPessoa(username, pessoa);
+		return ResponseEntity.ok().body(pessoaAlterada);
+	}
+
+
 
 }
