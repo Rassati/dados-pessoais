@@ -1,6 +1,6 @@
 package br.senac.tads.dsw.dados_pessoais.validacao;
 
-import br.senac.tads.dsw.dados_pessoais.PessoaDto;
+import br.senac.tads.dsw.dados_pessoais.dto.PessoaDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;

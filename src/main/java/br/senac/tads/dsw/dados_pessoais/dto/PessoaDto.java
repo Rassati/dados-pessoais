@@ -1,4 +1,4 @@
-package br.senac.tads.dsw.dados_pessoais;
+package br.senac.tads.dsw.dados_pessoais.dto;
 
 import br.senac.tads.dsw.dados_pessoais.validacao.SenhasIguais;
 import jakarta.validation.constraints.*;

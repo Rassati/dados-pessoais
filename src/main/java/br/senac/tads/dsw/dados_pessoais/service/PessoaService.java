@@ -1,4 +1,8 @@
-package br.senac.tads.dsw.dados_pessoais;
+package br.senac.tads.dsw.dados_pessoais.service;
+
+import br.senac.tads.dsw.dados_pessoais.dto.PessoaAlteracaoDto;
+import br.senac.tads.dsw.dados_pessoais.dto.PessoaDto;
+import br.senac.tads.dsw.dados_pessoais.exception.NaoEncontradoException;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;

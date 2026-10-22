@@ -1,4 +1,4 @@
-package br.senac.tads.dsw.dados_pessoais;
+package br.senac.tads.dsw.dados_pessoais.configuracao;
 
 import br.senac.tads.dsw.dados_pessoais.entidade.ConhecimentoEntity;
 import br.senac.tads.dsw.dados_pessoais.entidade.PessoaEntity;

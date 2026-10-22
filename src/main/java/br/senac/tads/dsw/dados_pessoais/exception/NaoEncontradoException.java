@@ -1,4 +1,4 @@
-package br.senac.tads.dsw.dados_pessoais;
+package br.senac.tads.dsw.dados_pessoais.exception;
 
 public class NaoEncontradoException extends RuntimeException{
 

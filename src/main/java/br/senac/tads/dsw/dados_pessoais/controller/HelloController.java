@@ -1,4 +1,6 @@
-package br.senac.tads.dsw.dados_pessoais;
+package br.senac.tads.dsw.dados_pessoais.controller;
+
+import br.senac.tads.dsw.dados_pessoais.dto.Mensagem;
 
 import tools.jackson.core.JacksonException;
 import org.springframework.http.MediaType;
