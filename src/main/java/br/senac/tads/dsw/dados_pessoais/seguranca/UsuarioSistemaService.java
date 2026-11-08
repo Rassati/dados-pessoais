@@ -1,56 +1,38 @@
 package br.senac.tads.dsw.dados_pessoais.seguranca;
 
+import br.senac.tads.dsw.dados_pessoais.entidade.RoleEntity;
+import br.senac.tads.dsw.dados_pessoais.entidade.UsuarioSistemaEntity;
+import br.senac.tads.dsw.dados_pessoais.repositorio.UsuarioSistemaRepository;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UsuarioSistemaService implements UserDetailsService {
-	private final Map<String, UserDetails> usuarios;
 
-	public UsuarioSistemaService(PasswordEncoder passwordEncoder) {
-		this.usuarios = new HashMap<>();
+    private final UsuarioSistemaRepository usuarioSistemaRepository;
 
-		this.usuarios.put("admin", new UsuarioSistema(
-			"admin",
-			passwordEncoder.encode("Abcd%12345"),
-			List.of(
-				new SimpleGrantedAuthority("ROLE_ADMIN"),
-				new SimpleGrantedAuthority("ROLE_GERENTE"),
-				new SimpleGrantedAuthority("ROLE_USER")
-			)
-		));
+    public UsuarioSistemaService(UsuarioSistemaRepository usuarioSistemaRepository) {
+        this.usuarioSistemaRepository = usuarioSistemaRepository;
+    }
 
-		this.usuarios.put("user1", new UsuarioSistema(
-			"user1",
-			passwordEncoder.encode("Abcd%12345"),
-			List.of(
-				new SimpleGrantedAuthority("ROLE_GERENTE"),
-				new SimpleGrantedAuthority("ROLE_USER")
-			)
-		));
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UsuarioSistemaEntity entity = usuarioSistemaRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario não encontrado: " + username));
 
-		this.usuarios.put("user2", new UsuarioSistema(
-			"user2",
-			passwordEncoder.encode("Abcd%12345"),
-			List.of(
-				new SimpleGrantedAuthority("ROLE_USER")
-			)
-		));
-	}
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserDetails usuario = usuarios.get(username);
-		if (usuario == null) {
-			throw new UsernameNotFoundException("Usuario não encontrado: " + username);
-		}
-		return usuario;
-	}
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (RoleEntity role : entity.getRoles()) {
+            authorities.add(new SimpleGrantedAuthority(role.getNome()));
+        }
+
+        return new UsuarioSistema(entity.getUsername(), entity.getSenha(), authorities);
+    }
 }
